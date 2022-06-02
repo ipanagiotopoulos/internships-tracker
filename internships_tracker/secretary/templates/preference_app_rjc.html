@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Student application" %} {% endblock title %}
+{% block content%}
+  <div class="card">
+      <div class="card-header">
+          <h2>Preference: {{preference.applicant.first_name}} {{preference.applicant.last_name}} </h2>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> First Name: </b> 
+          <span style="font-size: 1.1rem;" > {{preference.applicant.first_name}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> First Name: </b> 
+          <span style="font-size: 1.1rem;" > {{preference.applicant.last_name}} </span>
+        </div>
+      <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Department: </b> 
+        <span style="font-size: 1.1rem;" > {{preference.applicant.uni_department}}  </span>
+      </div>
+      <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Title: </b> 
+          <span style="font-size: 1.1rem;" > {{preference.applicant.register_number}}  </span>
+      </div>
+      <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Phone Number: </b> 
+          <span style="font-size: 1.1rem;" > {{preference.applicant.mobile_phone}}  </span>
+      </div>
+      <div style="margin-bottom: 1rem;"> 
+        <b style="font-size: 1.3rem; "> Created </b> 
+        <span style="font-size: 1.1rem;" > {{preference.created}}  </span>
+      </div>
+          <div class="card-footer bg-white mt-3">
+          <h2 style="color:black; margin-bottom: 2rem;">Choices</h2>
+          {% if preference.trainee_position_1 != None %}
+            <div style="margin-bottom: 1rem; color:black;"> 
+              <b style="font-size: 1.3rem; "> Choice 1 : </b> 
+              <span style="font-size: 1.1rem;" > {{preference.trainee_position_1}}  </span>
+            </div>
+          {% endif %}
+          {% if preference.trainee_position_2 != None %}
+            <div style="margin-bottom: 1rem; color:black;"> 
+              <b style="font-size: 1.3rem; "> Choice 2 : </b> 
+              <span style="font-size: 1.1rem;" > {{preference.trainee_position_2}}  </span>
+            </div>
+          {% endif %}
+          {% if preference.trainee_position_3 != None %}
+            <div style="margin-bottom: 1rem; color:black;"> 
+              <b style="font-size: 1.3rem; "> Choice 3 : </b> 
+              <span style="font-size: 1.1rem;" > {{preference.trainee_position_3}}  </span>
+            </div>
+          {% endif %}
+          {% if preference.trainee_position_4 != None %}
+            <div style="margin-bottom: 1rem; color:black;"> 
+              <b style="font-size: 1.3rem; "> Choice 4 : </b> 
+              <span style="font-size: 1.1rem;" > {{preference.trainee_position_4}}  </span>
+            </div>
+          {% endif %}
+          {% if preference.trainee_position_5 != None %}
+            <div style="margin-bottom: 1rem; color:black;"> 
+              <b style="font-size: 1.3rem; "> Choice 5 : </b> 
+              <span style="font-size: 1.1rem;" > {{preference.trainee_position_5}}  </span>
+            </div>
+          {% endif %}
+          {% if preference.finalized == False %}
+            <div style="margin-bottom: 1rem;"> 
+              <b style="font-size: 1.3rem; "> Activated </b> 
+              <span style="font-size: 1.1rem;" > NO </span>
+            </div>
+            <div style="float:right; ">
+              <button class="btn btn-lg btn-success mr-4"><a class="text-white" href="/secretary/students/preferences/{{preference.id}}/accept">Activate</button>
+              <button class="btn btn-lg btn-danger"><a class="text-white" href="/secretary/students/preferences/{{preference.id}}/delete">Reject</button>
+            </div>
+          {% else %}
+            <div style="margin-bottom: 1rem;"> 
+              <b style="font-size: 1.3rem; "> Activated </b> 
+              <span style="font-size: 1.1rem;" > YES </span>
+            </div>
+          {% endif %}
+        </div>
+    </div>
+  </div>
+{% endblock content %}

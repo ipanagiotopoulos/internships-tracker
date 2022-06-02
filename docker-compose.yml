@@ -1,0 +1,38 @@
+version: "3.7"
+services:
+  db:
+    image: postgres
+    container_name: internships_db
+    restart: always
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=admin
+    volumes:
+      - ../data/db:/var/lib/postgresql/data;
+    ports:
+      - "5432:5432"
+  web:
+    build: .
+    container_name: internships_web
+    env_file:
+      - ./internships_tracker/.env
+    ports:
+      - 8000:8000
+    volumes:
+      - ./internships_tracker:/appinternships
+      - ../logs:/var/log
+    depends_on:
+      - db
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/static:/var/www/static/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+volumes:
+  static_volume: null

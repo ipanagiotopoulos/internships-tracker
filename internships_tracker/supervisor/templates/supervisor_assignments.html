@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "My Students" %}{% endblock title %}
+{% block content %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    {% if not assignments %}
+      <div class="row" id="message">
+            <div class="col col-12">
+                <div class="alert alert-danger">{% translate "Assignments not found" %}</div>
+            </div>
+        </div>
+    {% endif %}
+        <table id="datatable" class="table align-items-center table-flush">
+            <thead class="bg-light">
+                <tr>
+                <th scope="col">{% trans "Trainee" %}</th>
+                <th scope="col">{% trans "Trainee Position" %}</th>
+                <th scope="col">{% trans "Actions" %}</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in assignments %}
+                <tr>
+                <td>{{assignment.trainee}}</td>
+                <td>{{assignment.trainee_position}}</td>
+                <td>
+                    <a class="btn btn-outline-info" href="{% url 'supervisor:assignment_detail' assignment.pk %}">{% trans "View" %}</a>
+                </td>
+                {% endfor %}
+            </tbody>
+        </table>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js">
+    </script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script type="text/javascript">
+        $('#datatable').DataTable({
+            "ordering" : false,
+        });
+    </script>
+     <script>
+        window.setTimeout(function() {
+            $("#message").fadeTo(400, 0).slideUp(400, function(){
+                    $(this).remove();
+                });
+        }, 3000);
+    </script>
+{% endblock content %}

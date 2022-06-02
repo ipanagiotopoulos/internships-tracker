@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %}{% trans "Delete student application" %}{% endblock title %}
+{% block content %}
+  <form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ preference }}"?</p>
+    <input type="submit" class="btn btn-danger" value="Confirm">
+  </form>
+{% endblock content %}

@@ -1,0 +1,38 @@
+
+Raw Blame
+   
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load applicant_tags %}
+{% block title %}{% trans "Update Application!" %}{% endblock title %}
+{% block content %}
+  <style type="text/css">
+    .select2-selection__clear {
+      font-size: 25px;
+      color:red;
+
+    }
+    .select2-selection {
+      padding-bottom:30px;
+    }
+  </style>
+  <h1 class="text-center mb-4">{% trans "Update Preference" %}</h1>
+  <div class="card">
+    <div class="card-header">
+      <h3>{% trans "Trainee Position choices" %}</h3>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% applicant_position_period request.user as application_period %}
+        {% if application_period %}
+          <button type="submit" class="btn btn-info">{% trans "Update" %}</button>
+        {% endif %}
+      </form>
+      {{ form.media }}
+    </div>
+  </div>
+{% endblock content %}
+

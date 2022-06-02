@@ -1,0 +1,9 @@
+django_env/
+logs/
+internships_tracker/media
+.DS_Store
+static/django_extensions
+static/bootstrap_icons/css
+static/admin
+static/vendor/select2/dist/css
+static/autocomplete_light

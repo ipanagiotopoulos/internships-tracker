@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load bootstrap_icons %}
+{% load applicant_tags %}
+{% block title %} {% trans "Job Postings" %} {% endblock title %}
+{% block content%}
+<div style="color:#17a2b8" class="pl-5 mb-4">
+    <svg style="margin:auto;"xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+        <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+    </svg>
+    <span class="h1"> Positions</span>
+</div>
+{% applicant_position_period request.user as applicant_position_period %}
+    {% if applicant_position_period  %}
+            {% if tps %}
+                {% for tp in tps %}
+                    <div class="card mb-5">
+                        <div class="header">
+                        </div>
+                        <div style="font-size: 2rem; color: #000053;" class="card-body bg-white">
+                            <span style="font-size: 2rem; color: #0047ab;" >{{tp.title}} for </span>
+                            <span style="font-size: 2rem; color: #0047ab; font-weight: bold;" > {{tp.carrier.official_name}} </span>
+                            <hr>
+                            <b><h4>Description:</h4></b>
+                            <span style="font-size: 1.3rem;" class="pt-3">{{tp.description}} </span>
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                    </div>
+                {% endfor%}
+                {% if is_paginated %}
+                         <nav aria-label="Page navigation example">
+                         <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">Previous</a>
+                        {% else %}
+                           <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                        {% endif %}
+                        {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="active page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link disabled" href="#">Next</a>
+                            </li>
+                        {% endif %}
+                        </ul>
+                        </nav>
+                {% endif %} 
+            {% else %}
+                <div class="row">
+                    <div class="col col-12">
+                        <div class="alert alert-danger"><h5>{% translate "No job postings found!" %}</h5></div>
+                    </div>
+                </div>
+                <a  href="/" class="btn btn-lg btn-info mt-4 ">Go back</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col col-12">
+                <div class="alert alert-danger"><h5>{% translate "Application period for this department is over!" %}</h5></div>
+            </div>
+        </div>
+        <a  href="/" class="btn btn-lg btn-info mt-4 ">Go back</a>
+    {% endif %}
+{% endblock content %}

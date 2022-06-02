@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load static %}
+<script src="//cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="//cdn.bootcss.com/moment.js/2.17.1/moment.min.js"></script>
+<script src="{% static '/js/datepicker.js' %}"></script>  
+{% block title %}{% trans "Create Student Assginment" %}{% endblock title %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h2>{% trans "Create Student Assignment" %}</h2>
+    </div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-info">{% trans "Create" %}</button>
+      </form>
+      <br>
+      <br>
+    </div>
+    <div class="card-footer">
+    </div>
+  </div>
+{% endblock content %}

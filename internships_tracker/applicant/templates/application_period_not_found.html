@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Application Period Not Found" %} {% endblock title %}
+{% block content %}
+  <div class="row">
+    <div class="col col-12">
+        <div class="alert alert-danger"><h4>{% translate "Application Period not found for your department!" %}</h4></div>
+        <button class="btn btn-lg  btn-info"> <a  class="text-white" href="/">Go back </button>
+    </div>
+   </div>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %}{% trans "Carrier Trainee" %}{% endblock title %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+        <h2> {{assignment.trainee.first_name}} {{assignment.trainee.last_name}} {% trans "assesment" %}</h2>
+    </div>
+    <div class="card-body">
+        <h3>Student details</h3>
+        <hr>
+        <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Student: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.trainee.first_name}} {{assignment.trainee.last_name}}</span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+            <b style="font-size: 1.3rem; "> Register Number: </b> 
+            <span style="font-size: 1.1rem;" > {{assignment.trainee.register_number}}</span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+            <b style="font-size: 1.3rem; "> Student email: </b> 
+            <span style="font-size: 1.1rem;" > {{assignment.trainee.email}}</span>
+        </div>
+        <hr>
+        <h3>Position details</h3>
+        <hr>
+        <div style="margin-bottom: 1rem;"> 
+            <b style="font-size: 1.3rem; "> Position: </b> 
+            <span style="font-size: 1.1rem;" > {{assignment.trainee_position.title}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+            <b style="font-size: 1.3rem; "> Carrier: </b> 
+            <span style="font-size: 1.1rem;" > {{assignment.trainee_position.carrier.official_name}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+            <b style="font-size: 1.3rem; "> Supervisor: </b> 
+            <span style="font-size: 1.1rem;" > {{assignment.trainee_position.supervisor}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+            <b style="font-size: 1.3rem; "> Assignment period: </b> 
+            <span style="font-size: 1.1rem;" > {{assignment.assignment_period.from_date}} - {{assignment.assignment_period.to_date}} </span>
+        </div>
+        {% if report and report.finalized %}
+            <hr>
+            <h3>Internship Report </h3>
+            <hr>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> File: </b> 
+                <span style="font-size: 1.1rem;" > <a href="{{report.report_file.url}}"> {{report.report_file}} </a> </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Date: </b> 
+                <span style="font-size: 1.1rem;" > {{report.date}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Comments: </b> 
+                <span style="font-size: 1.1rem;" > {{report.comments}} </span>
+            </div>   
+            {% if assesment %}
+                    <hr>
+                    <h3>My Assesment</h3>
+                    <hr>
+                    <div style="margin-bottom: 1rem;"> 
+                        <b style="font-size: 1.3rem; "> Date: </b> 
+                        <span style="font-size: 1.1rem;" > {{assesment.date}} </span>
+                    </div>
+                    <div style="margin-bottom: 1rem;"> 
+                        <b style="font-size: 1.3rem; "> Comments: </b> 
+                        <span style="font-size: 1.1rem;" > {{assesment.comments}} </span>
+                    </div>
+                    <div style="margin-bottom: 1rem;"> 
+                        <b style="font-size: 1.3rem; "> Grade: </b> 
+                        <span style="font-size: 1.1rem;" > {{assesment.grade}} </span>
+                    </div>
+                    <div style="margin-bottom: 1rem;"> 
+                                <b style="font-size: 1.3rem;"> File: </b> 
+                                <span style="font-size: 1.1rem;" > <a href="{{assesment.assesment_file.url}}">{{assesment.assesment_file}}</a></span>
+                    </div>
+                {% else %}
+                    </div>
+                        <div class="card-footer ">
+                            <a  href="{% url 'carrier:create_assesment' assignment.pk %}" class="btn btn-lg btn-success ml-3">{% trans "Create Assesment" %}</a>
+                    </div>
+                {% endif %}
+        {% endif %}
+    </div>
+  </div>
+{% endblock content %}

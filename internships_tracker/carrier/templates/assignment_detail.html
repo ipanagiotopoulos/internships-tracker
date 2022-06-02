@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Assignment" %}{% endblock title %}
+{% block content %}
+    {% if message %}
+        <div class="row">
+            <div class="col col-12">
+                <div class="alert alert-danger">{{message}}</div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="card">
+        <div class="card-header">
+            <h2>{% trans "Assignment information" %}</h2>
+        </div>
+        <div class="card-body">
+            <h3>Student details</h3>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Student: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.trainee.first_name}} {{assignment.trainee.last_name}}</span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Register Number: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.trainee.register_number}}</span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Supervisor Name: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.supervisor.first_name}} {{assignment.supervisor.last_name}}</span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Student email: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.trainee.email}}</span>
+            </div>
+            <hr>
+            <h3 style="margin-bottom: 2rem;">Position details</h3>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Position: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.trainee_position.title}}</span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Carrier: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.trainee_position.carrier.official_name}}</span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Assignment period: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.assignment_period.from_date}} - {{assignment.assignment_period.to_date}}</span>
+            </div>
+        {% if assignment.assignment_status != "P"  %}
+             <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Status: </b> 
+                <span style="font-size: 1.1rem;" > {{assignment.assignment_status}} </span>
+            </div>
+        {% else %}
+                <a href="{% url 'carrier:assignment_accept' assignment.pk %}?department={{ request.GET.department }}" class="btn btn-success ">{% trans "Accept" %}</a>
+                <a  href="{% url 'carrier:assignment_reject' assignment.pk %}?department={{ request.GET.department }}" class="btn btn-danger ml-3">{% trans "Reject" %}</a>
+        {% endif %}
+    </div>
+    </div>
+{% endblock content %}

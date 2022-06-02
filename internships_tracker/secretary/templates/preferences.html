@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Students' applications" %} {% endblock title %}
+{% block content%}
+{% load bootstrap %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    {% if message %}
+        {{message}}   
+    {% endif %}
+    {% if prefrences %}
+        <button class="btn btn-info mb-4" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Search filters
+        </button>
+        <div class="collapse mt-4 mb-4" id="collapseExample">
+                <form  class='form-group' method="GET">
+                    {{ filter.form|bootstrap_horizontal}}
+                    <button type="submit" class="btn btn-info">Search</button>
+                </form>
+        </div>
+        <table id="datatable" class="table align-items-center table-flush">
+            <thead class="bg-light">
+                <tr>
+                <th scope="col">{% trans "Name" %}</th>
+                <th scope="col">{% trans "email" %}</th>
+                <th scope="col">{% trans "Department" %}</th>
+                <th scope="col">{% trans "Created at" %}</th>
+                <th scope="col">{% trans "Accepted" %}</th>
+                <th scope="col">{% trans "Register Number" %}</th>
+                <th scope="col">{% trans "Action" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pref in filter.qs %}                                                            
+                <tr>
+                    <td>{{pref.applicant.fist_name}} {{pref.applicant.last_name}}</td>
+                    <td>{{pref.applicant.email}}</td>
+                    <td>{{pref.applicant.uni_department}}</td>
+                    <td>{{pref.created}}</td>
+                    {% if pref.finalized == False %}
+                    <td class="text-right row">
+                        <div class="btn-group" role="group">
+                            <div class="col-md-5 custom">
+                                <button type="button" class="btn btn-sm btn-success"> <a class="text-white" href="/secretary/students/preferences/{{pref.id}}/accept"> Accept</button>        
+                            </div>
+                            <div class="col-md-5 custom">
+                                <form action="" method="POST">
+                                    <button type="button" class="btn btn-sm btn-danger"> <a class="text-white" href="/secretary/students/preferences/{{pref.id}}/delete"> Reject</button>
+                                </form>
+                            </div>
+                        </div>
+                    </td>
+                    {% else %}
+                    <td>YES</td>
+                {% endif %}
+                    <td>{{pref.applicant.register_number}}</td>
+                    <td>
+                        <a class="btn btn-outline-info" href="/secretary/students/preferences/{{pref.id}}/edit">{% trans "View" %}</a>
+                    </td>
+            </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="row">
+            <div class="col col-12">
+                <div class="alert alert-danger"><h4>{% translate "No student applications found!" %}</h4></div>
+                <button class="btn btn-lg  btn-info"> <a  class="text-white" href="/">Go back </button>
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

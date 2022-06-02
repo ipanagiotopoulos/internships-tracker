@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load bootstrap %}
+{% block title %} {% trans "Supervisor Assesements" %} {% endblock title %}
+{% block content%}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    {% if trainee_position_message_result %}
+        <div class="row" style="padding-bottom: 2rem;">
+            <div class="col col-12">
+                <div class="alert alert-danger"><h4>{{trainee_position_message_result}}</h4></div>
+            </div>
+        </div>
+    {% endif %}
+    {% if period_message %}
+        <div class="row" style="padding-bottom: 2rem;">
+            <div class="col col-12">
+                <div class="alert alert-danger"><h4>{{period_message}}</h4></div>
+            </div>
+        </div>
+    {% endif %}
+    <br>
+    <br>
+    <button class="btn btn-info mb-4" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        Search filters
+    </button>
+    <div class="collapse mt-4 mb-4" id="collapseExample">
+        <form  class='form-group' method="GET">
+            {{ filter.form|bootstrap_horizontal}}
+            <button type="submit" class="btn btn-info">Search</button>
+        </form>
+    </div>
+    <table id="datatable" class="display nowrap" style="width:100%">
+        <thead class="bg-light">
+            <tr>
+                <th scope="col">{% trans "Job Title" %}</th>
+                <th scope="col">{% trans "Carrier" %}</th>
+                <th scope="col">{% trans "Job Code" %}</th>
+                <th scope="col">{% trans "Trainee" %}</th>
+                <th scope="col">{% trans "Register Number" %}</th>
+                <th scope="col">{% trans "Uni Department" %}</th>
+                <th scope="col">{% trans "Supervisor" %}</th>
+                <th scope="col">{% trans "Supervisor Register Number" %}</th>
+                <th scope="col">{% trans "Finalized" %}</th>
+                <th scope="col">{% trans "Assesement File" %}</th>
+                <th scope="col">{% trans "Action" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sa in filter.qs %}                                                            
+            <tr>
+                <td>{{sa.assignement_upon.trainee_position.title}}</td>
+                <td>{{sa.assignement_upon.trainee_position.carrier.official_name}}</td>
+                <td>{{sa.assignement_upon.trainee_position.job_code}}:{{sa.assignement_upon.trainee_position.no_id}}</td>
+                <td>{{sa.assignement_upon.trainee.first_name}} {{sa.assignement_upon.trainee.last_name}}</td>
+                <td>{{sa.assignement_upon.trainee.register_number}}</td>
+                <td>{{sa.assignement_upon.trainee.department}}</td>
+                <td>{{sa.assignement_upon.supervisor.first_name}}:{{sa.assignement_upon.supervisor.last_name}}</td>
+                <td>{{sa.assignement_upon.supervisor.register_number}}</td>
+                {% if sa.finalized == False %}
+                    <td class="text-right row">
+                       NO
+                    </td>
+                {% else %}
+                    <td>YES</td>
+                {% endif %}
+                    <td><a href="{{sa.assesment_file.url.url}}">{{sa.assesment_file}}</a></td>
+                    <td>
+                        <a class="btn btn-outline-info" href="/secretary/assignments/supervisor_assesment/{{sa.id}}">{% trans "View" %}</a>
+                    </td>
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script type="text/javascript"
+	   src="https://code.jquery.com/jquery-3.5.1.js">
+    </script>
+    <script type="text/javascript"
+	   src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js">
+    </script>
+    <script type="text/javascript"
+	   src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js">
+    </script>
+    <script type="text/javascript"
+	   src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        var table = $('#datatable').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                "ordering" : false,
+                "responsive":true
+            })
+        })
+    </script>
+    <script>
+        window.setTimeout(function() {
+            $("#message").fadeTo(400, 0).slideUp(400, function(){
+                    $(this).remove();
+                });
+        }, 3000);
+    </script>
+{% endblock content %}

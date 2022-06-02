@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+ {% load crispy_forms_tags %}
+ {% load i18n %}
+ {% load applicant_tags %}
+ {% block title %}{% trans "Student assignment" %}{% endblock title %}
+ {% block content %}
+ <div class="card">
+     <div class="card-header">
+         <h2> {{assignment.trainee.first_name}} {{assignment.trainee.last_name}} {% trans "assignment" %}</h2>
+     </div>
+     <div class="card-body">
+         <h3>Student details</h3>
+         <hr>
+         <div style="margin-bottom: 1rem;"> 
+             <b style="font-size: 1.3rem; "> Student: </b> 
+             <span style="font-size: 1.1rem;" > {{assignment.trainee.first_name}} {{assignment.trainee.last_name}}</span>
+         </div>
+         <div style="margin-bottom: 1rem;"> 
+             <b style="font-size: 1.3rem; "> Register Number: </b> 
+             <span style="font-size: 1.1rem;" > {{assignment.trainee.register_number}} </span>
+         </div>  
+         <hr>
+         <h3>Position details</h3>
+         <hr>
+         <div style="margin-bottom: 1rem;"> 
+             <b style="font-size: 1.3rem; "> Position: </b> 
+             <span style="font-size: 1.1rem;" > {{assignment.trainee_position.title}} </span>
+         </div>  
+         <div style="margin-bottom: 1rem;"> 
+             <b style="font-size: 1.3rem; "> Carrier: </b> 
+             <span style="font-size: 1.1rem;" > {{assignment.trainee_position.carrier.official_name}} </span>
+         </div>
+         <div style="margin-bottom: 1rem;"> 
+             <b style="font-size: 1.3rem; "> Supervisor: </b> 
+             <span style="font-size: 1.1rem;" > {{assignment.supervisor.first_name}} {{assignment.supervisor.last_name}} </span>
+         </div> 
+         <div style="margin-bottom: 1rem;"> 
+             <b style="font-size: 1.3rem; "> Supervisor Register Number: </b> 
+             <span style="font-size: 1.1rem;" > {{assignment.supervisor.register_number}}</span>
+         </div> 
+         <div style="margin-bottom: 1rem;"> 
+             <b style="font-size: 1.3rem; "> Assignment Period: </b> 
+             <span style="font-size: 1.1rem;" > {{assignment.assignment_period.from_date}} - {{assignment.assignment_period.to_date}}  </span>
+         </div>
+        {% if assignment.assignment_status == 'P'%}
+            {% if assignment.finalized%}
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem; "> Finalized: </b> 
+                    <span style="font-size: 1.1rem;" > {{assignment.finalized}} </span>
+                </div>
+            {% else %}
+            <div style="margin-bottom: 1rem;"> 
+                    <button class="btn btn-lg btn-success mr-4"><a class="text-white" href="/secretary/assignments/{{assignment.id}}/finalize">Finalize</button>
+                    <button class="btn btn-lg btn-danger"><a class="text-white" href="/secretary/assignments/{{assignment.id}}/discard">Delete</button>
+            </div>
+            {% endif %}
+        {% endif %}
+        <div style="margin-bottom: 1rem;"> 
+             <b style="font-size: 1.3rem; "> Assignment Status: </b> 
+              {% if assignment.assignment_status == 'P'%}
+                <span style="font-size: 1.1rem;" > Pending </span>
+              {% endif %}
+              {% if assignment.assignment_status == 'A'%}
+                <span style="font-size: 1.1rem;" > Accepted </span>
+              {% endif %}
+              {% if assignment.assignment_status == 'R'%}
+                <span style="font-size: 1.1rem;" > Rejected </span>
+              {% endif %}
+        </div>
+     </div>
+     {% if report %}
+        <div class="card-footer">
+            <hr>
+            <h3>Internship report</h3>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem;"> File: </b> 
+                <span style="font-size: 1.1rem;" > <a href="{{report.report_file.url}}">{{report.report_file}}</a></span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Date: </b> 
+                <span style="font-size: 1.1rem;"> {{report.date}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Comments: </b> 
+                <span style="font-size: 1.1rem;"> {{report.comments}} </span>
+            </div>
+            {% if report.finalized == True %}
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem; "> Finalized: </b> 
+                    <span style="font-size: 1.1rem;"> {{report.finalized}} </span>
+                </div>
+            {% else %}
+                <div style="margin-bottom: 1rem;"> 
+                     <button class="btn btn-lg btn-success mr-4"><a class="text-white" href="/secretary/assignments/{{assignment.id}}/intern_report/finalize">Finalize</a></button>
+                     <button class="btn btn-lg btn-danger"><a class="text-white" href="/secretary/assignments/{{assignment.id}}/intern_report/discard">Delete</a></button>
+                </div>
+            {% endif %}
+        </div>
+     {% endif %}
+     {% if carrier_assesment %}
+        <div class="card-body">
+            <hr>
+            <h3>Carrier Assesment</h3>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Submission Date: </b> 
+                <span style="font-size: 1.1rem;"> {{carrier_assesment.created}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Comments: </b> 
+                <span style="font-size: 1.1rem;"> {{carrier_assesment.comments}} </span>
+            </div>
+             <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Grade: </b> 
+                <span style="font-size: 1.1rem;"> {{carrier_assesment.grade}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem;"> File: </b> 
+                <span style="font-size: 1.1rem;" > <a href="{{carrier_assesment.assesment_file.url}}">{{carrier_assesment.assesment_file}}</a></span>
+            </div>
+            {% if carrier_assesment.finalized == True %}
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem; "> Finalized: </b> 
+                    <span style="font-size: 1.1rem;"> {{carrier_assesment.finalized}} </span>
+                </div>
+            {% else %}
+                <div style="margin-bottom: 1rem;"> 
+                    <button class="btn btn-lg btn-success mr-4"><a class="text-white" href="/secretary/assignments/{{assignment.id}}/carrier_assesment/finalize">Finalize</a></button>
+                    <button class="btn btn-lg btn-danger"><a class="text-white" href="/secretary/assignments/{{assignment.id}}/carrier_assesment/discard">Delete</a></button>
+                </div>
+            {% endif %}
+        </div>
+     {% endif %}
+     {% if supervisor_assesment %}
+        <div class="card-footer">
+            <hr>
+            <h3>Supervisor Assesment</h3>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Submission Date: </b> 
+                <span style="font-size: 1.1rem;"> {{supervisor_assesment.created}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Comments: </b> 
+                <span style="font-size: 1.1rem;"> {{supervisor_assesment.comments}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem;"> File: </b> 
+                <span style="font-size: 1.1rem;" > <a href="{{supervisor_assesment.assesment_file.url}}">{{supervisor_assesment.assesment_file}}</a></span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Grade: </b> 
+                <span style="font-size: 1.1rem;"> {{supervisor_assesment.grade}} </span>
+            </div>
+            {% if supervisor_assesment.finalized == True %}
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem; "> Finalized: </b> 
+                    <span style="font-size: 1.1rem;"> {{supervisor_assesment.finalized}} </span>
+                </div>
+            {% else %}
+                <div style="margin-bottom: 1rem;"> 
+                    <button class="btn btn-lg btn-success mr-4"><a class="text-white" href="/secretary/assignments/{{assignment.id}}/supervisor_assesment/finalize">Finalize</a></button>
+                    <button class="btn btn-lg btn-danger"><a class="text-white" href="/secretary/assignments/{{assignment.id}}/supervisor_assesment/discard">Delete</a></button>
+                </div>
+            {% endif %}
+        </div>
+     {% endif %}
+ </div>
+ {% endblock content %} 

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load applicant_tags %}
+{% block title %}{% trans "Application for Internships!" %}{% endblock title %}
+{% block content %}
+  {% has_internship_period_student request.user as has_internship_period %}
+  {% if has_internship_period %}
+    <div class="row">
+      <div class="col col-12">
+          <div class="alert alert-danger">{% translate "You have already submited the internship report !" %}</div>
+      </div>
+    </div>
+  {% else %}
+    <div class="card">
+      <div class="card-header">
+        <h2>{% trans "Internship Report" %}</h2>
+      </div>
+      <div class="card-body">
+        <form method="post" enctype="multipart/form-data" >
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-info">{% trans "Submit report" %}</button>
+        </form>
+      </div> 
+      <div class="card-footer">
+      </div>
+    </div>
+    {{ form.media }}
+  {% endif %}
+{% endblock content %}

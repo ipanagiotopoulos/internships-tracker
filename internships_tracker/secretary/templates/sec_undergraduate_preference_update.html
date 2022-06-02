@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %}{% trans "Update Student Preference!" %}{% endblock title %}
+{% block content %}
+    <style type="text/css">
+      .select2-selection__clear {
+        font-size: 25px;
+        color:red;
+
+      }
+      .select2-selection {
+        padding-bottom:30px;
+      }
+    </style>
+    <div class="card">
+      <div class="card-header">
+        <h2>{% trans "Update Preference" %}</h2>
+      </div>
+      <div class="card-body">
+        <form method="post" >
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button type="submit" class="btn btn-info">{% trans "Update" %}</button>
+        </form>
+        {{ form.media }}
+      </div>
+    </div>
+  {% endblock content %}

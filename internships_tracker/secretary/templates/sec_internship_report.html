@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Internship  Report" %} {% endblock title %}
+{% block content%}
+    <div class="card">
+        <div class="card-header">
+            <h2>{{internship_report.assignment.trainee.first_name}} {{internship_report.assignment.trainee.last_name}} internship report</h2>
+        </div>
+        <div class="card-body">
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Register Number: </b> 
+                <span style="font-size: 1.1rem;" > {{internship_report.assignment.trainee.register_number}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Department: </b> 
+                <span style="font-size: 1.1rem;" > {{internship_report.assignment.trainee.department}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Position: </b> 
+                <span style="font-size: 1.1rem;" > {{internship_report.assignment.trainee_position.title}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Carrier: </b> 
+                <span style="font-size: 1.1rem;" > {{internship_report.assignment.trainee_position.carrier.official_name}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Job ID: </b> 
+                <span style="font-size: 1.1rem;" > {{internship_report.assignment.trainee_position.job_code}}:{{internship_report.assignment.trainee_position.no_id}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Supervisor: </b> 
+                <span style="font-size: 1.1rem;" > {{internship_report.assignment.supervisor.first_name}} {{internship_report.assignment.supervisor.last_name}} </span>
+            </div> 
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Supervisor Register Number: </b> 
+                <span style="font-size: 1.1rem;" > {{internship_report.assignment.supervisor.register_number}}</span>
+            </div> 
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Created at: </b> 
+                <span style="font-size: 1.1rem;" > {{internship_report.date}} </span>
+            </div>
+            <hr>
+            <h2>Comments: </h2>
+            <div style="margin-bottom: 1rem; margin-top: 1rem;"> 
+                <span style="font-size: 1.1rem;" > {{internship_report.comments}} </span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; ">Attendance Report File: </b> 
+                <span style="font-size: 1.1rem;" > <a href="{{internship_report.attendance_report_file.url}}">{{internship_report.attendance_report_file}}</a></span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Questionaire File:: </b> 
+                <span style="font-size: 1.1rem;" > <a href="{{internship_report.questionaire_file.url}}">{{internship_report.questionaire_file}}</a></span>
+            </div>
+            <div style="margin-bottom: 1rem;"> 
+                <b style="font-size: 1.3rem; "> Report File: </b> 
+                <span style="font-size: 1.1rem;" > <a href="{{internship_report.report_file.url}}">{{internship_report.report_file}}</a></span>
+            </div>
+            {% if internship_report.finalized == True %}
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem; "> Finalized: </b> 
+                    <span style="font-size: 1.1rem;" > YES </span>
+                </div>
+            {% else %}
+                <div style="margin-bottom: 1rem;"> 
+                    <button class="btn btn-lg btn-success mr-4"><a class="text-white" href="/secretary/assignments/intern_reports/{{internship_report.id}}/finalize">Finalize</a></button>
+                    <button class="btn btn-lg btn-danger"><a class="text-white" href="/secretary/assignments/intern_reports/{{internship_report.id}}/discard">Delete</a></button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

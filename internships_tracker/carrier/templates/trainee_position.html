@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "My carrier" %}{% endblock title %}
+{% block content %}
+  <div class="card">
+      <div class="card-header bg-white">
+          <h2>{{trainee_position.title}}</h2>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Name: </b> 
+          <span style="font-size: 1.1rem;" > {{trainee_position.title}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> JOB ID: </b> 
+          <span style="font-size: 1.1rem;" > {{trainee_position.job_code}}:{{trainee_position.no_id}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Date Created: </b> 
+          <span style="font-size: 1.1rem;" > {{trainee_position.carrier_assignment.department}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Date Created: </b> 
+          <span style="font-size: 1.1rem;" > {{trainee_position.created}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Supervisor: </b> 
+          <span style="font-size: 1.1rem;" > {{trainee_position.supervisor}} </span>
+        </div>
+        <hr>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Description: </b> 
+          <span style="font-size: 1.1rem;" > {{trainee_position.description}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Status: </b> 
+           {% if  trainee_position.finalized == False %}
+                <span style="font-size: 1.1rem;" > Pending </span>
+            {% else %}
+                <span style="font-size: 1.1rem;" > Accepted </span>
+            {% endif %}
+      </div>
+        </div>
+  </div>
+{% endblock %}

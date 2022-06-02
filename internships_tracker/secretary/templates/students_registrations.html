@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load bootstrap %}
+{% block title %} {% trans "Student registrations" %} {% endblock title %}
+{% block content%}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+  {% if student_reg_message_result %}
+    <div class="row" id="message">
+      <div class="col col-12">
+          <div class="alert alert-danger"><h4>{{student_reg_message_result}}</h4></div>
+      </div>
+    </div>
+  {% endif %}
+  <div class="table-responsive-xl" > 
+    <button class="btn btn-info mb-4" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Search filters
+    </button>
+    <div class="collapse mt-4 mb-4" id="collapseExample">
+          <form  class='form-group' method="GET">
+              {{ filter.form | bootstrap_horizontal}}
+              <button type="submit" class="btn btn-info">Search</button>
+          </form>
+     </div>
+    <table id="datatable" class="table align-items-center table-flush">
+        <thead class="bg-light">
+            <tr>
+            <th scope="col">{% trans "First Name" %}</th>
+            <th scope="col">{% trans "Last Name" %}</th>
+            <th scope="col">{% trans "Email" %}</th>
+            <th scope="col">{% trans "Department" %}</th>
+            <th scope="col">{% trans "Active" %}</th>
+            <th scope="col">{% trans "Action" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stud in filter.qs %}
+            <tr>
+                <td>{{stud.first_name}}</td>
+                <td>{{stud.last_name}}</td>
+                <td>{{stud.email}}</td>
+                <td>{{stud.department}}</td>
+                {% if stud.is_active == False %}
+                  <td>NO</td>
+                {% else %}
+                <td>YES</td>
+              {% endif %}
+                <td>
+                    <a class="btn btn-outline-info" href="/secretary/students/registrations/{{stud.id}}/edit">{% trans "View" %}</a>
+                </td>
+          </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
+  <script type="text/javascript"
+      src="https://code.jquery.com/jquery-3.5.1.js">
+  </script>
+  <script type="text/javascript"
+	    src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js">
+  </script>
+  <script type="text/javascript"
+	   src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js">
+  </script>
+  <script type="text/javascript"
+	   src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+  </script>
+  <script type="text/javascript">
+        $(document).ready(function() {
+        var table = $('#datatable').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                "ordering" : false,
+                "responsive":true
+            })
+        })
+  </script>
+  <script>
+        window.setTimeout(function() {
+            $("#message").fadeTo(400, 0).slideUp(400, function(){
+                    $(this).remove();
+                });
+        }, 3000);
+  </script>
+{% endblock content %}

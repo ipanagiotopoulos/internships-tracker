@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block title %} {% trans "Assignemnts" %}{% endblock title %}
+{% block content %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+  {% if assignments %}
+        <table id="datatable" class="table align-items-center table-flush">
+            <thead class="bg-light">
+                <tr>
+                <th scope="col">{% trans "Date" %}</th>
+                <th scope="col">{% trans "Trainee" %}</th>
+                <th scope="col">{% trans "Trainee Position" %}</th>
+                <th scope="col">{% trans "Supervisor" %}</th>
+                <th scope="col">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in assignments %}
+                <tr>
+                <td>{{assignment.date}}</td>
+                <td>{{assignment.trainee}}</td>
+                <td>{{assignment.trainee_position}}</td>
+                <td>{{assignment.supervisor.first_name}} {{assignment.supervisor.last_name}}</td>
+                <td>
+                    <a class="btn btn-outline-info" href="{% url 'carrier:assignment_detail' assignment.pk %}?department={{ request.GET.department }}">{% trans "View" %}</a>
+                </td>
+                {% endfor %}
+            </tbody>
+        </table>
+  {% else %}
+        <div class="row">
+            <div class="col col-12">
+                <div class="alert alert-danger">{% translate "Pending assignments not found" %}</div>
+            </div>
+        </div>
+  {% endif %}
+  <script type="text/javascript"
+        src="https://code.jquery.com/jquery-3.5.1.js">
+  </script>
+  <script type="text/javascript"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js">
+  </script>       
+  <script type="text/javascript"
+      src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js">
+  </script>
+  <script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+  </script>
+  <script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+  </script>
+  <script type="text/javascript">
+      $(document).ready(function() {
+        var table = $('#datatable').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                "ordering" : false,
+                "responsive":true,
+            })
+       })
+   </script>
+{% endblock content %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load applicant_tags %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% block title %}{% trans "My Carrier Consent" %}{% endblock title %}
+{% block content %}
+    {% if not carrier_consent %}
+        <div class="row">
+            <div class="col col-12">
+                <div class="alert alert-danger">You do not have  any assignment yet !</div>
+            </div>
+        </div>
+    {% else %}
+        <div class="card">
+            <div class="card-header">
+                <h2>{% trans "Assignment information" %}</h2>
+            </div>
+            <div class="card-body">
+                <h3>My Assignment</h3>
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem;"> Date: </b> 
+                    <span style="font-size: 1.1rem;" > {{carrier_consent.date}} </span>
+                </div>
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem;"> Student: </b> 
+                    <span style="font-size: 1.1rem;" > {{carrier_consent.assignement_upon.trainee.first_name}} {{carrier_consent.assignement_upon.trainee.last_name}}</span>
+                </div>
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem;"> Register Number: </b> 
+                    <span style="font-size: 1.1rem;" > {{carrier_consent.assignement_upon.trainee.register_number}} </span>
+                </div>
+                <hr>
+                <h3>Position details</h3>
+                <br>
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem;"> Position: </b> 
+                    <span style="font-size: 1.1rem;" > {{carrier_consent.assignement_upon.trainee_position.title}}</span>
+                </div>
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem;"> Carrier: </b> 
+                    <span style="font-size: 1.1rem;" > {{carrier_consent.assignement_upon.trainee_position.carrier.official_name}}</span>
+                </div>
+                <div style="margin-bottom: 1rem;"> 
+                    <b style="font-size: 1.3rem;"> Assignment period: </b> 
+                    <span style="font-size: 1.1rem;" > {{carrier_consent.assignement_upon.assignment_period.from_date}} - {{carrier_consent.assignement_upon.assignment_period.to_date}}</span>
+                </div>
+            </div>
+            <div class="card-footer">
+            {% applicant_internship_report_period request.user as application_intern_period %}
+                {% if not report %}
+                    {% if application_intern_period %}
+                        <a href="{% url 'applicant:report_create' carrier_consent.assignement_upon.pk %}" class="btn btn-lg btn-success ">{% trans "Upload Internship Report" %}</a>
+                    {% endif %}
+                {% else %}
+                    <hr>
+                        <h3>My Internship report</h3>
+                        <div style="margin-bottom: 1rem;"> 
+                            <b style="font-size: 1.3rem;"> Report File: </b> 
+                            <span style="font-size: 1.1rem;" > <a href="{{report.report_file.url}}">{{report.report_file}}</a></span>
+                        </div>
+                        <div style="margin-bottom: 1rem;"> 
+                            <b style="font-size: 1.3rem;"> Questionaire File: </b> 
+                            <span style="font-size: 1.1rem;" > <a href="{{report.questionaire_file.url}}">{{report.questionaire_file}}</a></span>
+                        </div>
+                        <div style="margin-bottom: 1rem;"> 
+                            <b style="font-size: 1.3rem;"> Attendance Report File: </b> 
+                            <span style="font-size: 1.1rem;" > <a href="{{report.attendance_report_file.url}}">{{report.attendance_report_file}}</a></span>
+                        </div>
+                        <div style="margin-bottom: 1rem;"> 
+                            <b style="font-size: 1.3rem; "> Date: </b> 
+                            <span style="font-size: 1.1rem;"> {{report.date}} </span>
+                        </div>
+                        <div style="margin-bottom: 1rem;"> 
+                            <b style="font-size: 1.3rem; "> Comments: </b> 
+                            <span style="font-size: 1.1rem;"> {{report.comments}} </span>
+                        </div>
+                        {% if not report.finalized %}
+                          {% if application_intern_period %}
+                            <a href="{% url 'applicant:report_update' carrier_consent.assignement_upon.pk report.pk %}" class="btn btn-lg btn-success ">{% trans "Update Internship Report" %}</a>
+                          {% endif %}
+                        {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock content %}

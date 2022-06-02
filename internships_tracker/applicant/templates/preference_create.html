@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load i18n %}
+{% load applicant_tags %}
+{% block title %}{% trans "Application for Internships!" %}{% endblock title %}
+{% block content %}
+  <style type="text/css">
+    .select2-selection__clear {
+      font-size: 25px;
+      color:red;
+
+    }
+    .select2-selection {
+      padding-bottom:30px;
+    }
+  </style>
+  {% has_preference request.user as has_preference %}
+  {% if has_preference %}
+    <div class="row">
+      <div class="col col-12">
+          <div class="alert  alert-danger"><h2>{% translate "You have already submitted an application !" %}</h2></div>
+          <button class="btn btn-lg btn-info "><a class="text-white" href="/studentapplications/application/update"/> Update my application </button>
+      </div>
+    </div>
+  {% else %}
+    <div class="card">
+      <div class="card-header bg-white">
+          <h2>{% trans " Trainee Position choices" %}</h2>
+      </div>
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <button style="float: right; margin: 15px;"type="submit" class="btn btn-lg btn-info">{% trans "Submit" %}</button>
+          <br>
+          <br>
+        </form>
+        {{ form.media }}
+      </div>
+      <div class="card-footer">
+      </div>
+    </div>
+  {% endif %}
+{% endblock content %}

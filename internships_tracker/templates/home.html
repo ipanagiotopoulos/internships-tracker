@@ -1,0 +1,32 @@
+<!-- templates/home.html-->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+ {% load bootstrap_icons %}
+ {% load internships_app_tags %}
+ {% block content %}
+ 
+  {% if user.is_authenticated %}
+    Hi {{ user.username }}!
+    <br>
+    <br>
+    <p>Welcome to the Harokopio University of Athens Internship App System!</p>
+    <p>This app was designed in order to intersect the public and private sector with our University providing its students to have a chance to experience real working environements</p>
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+  {% else %}
+    <div class="container text-center bg-white">
+      <div class="card">
+        <div class="card-header bg-white">
+          <h3 class="nav-link text-dark col "> You are not logged in!</h3>
+        </div>
+        <div class="card-body">
+              <a  href="/accounts/login"
+                class="h4 text-info text-center pr-5">Login</a>
+              <a  href="/accounts/register/carrier_node"
+                  class="h4 text-info text-center">Register</a>
+        </div>
+      </div>
+    </div>
+{% endif %}
+
+{% endblock %}

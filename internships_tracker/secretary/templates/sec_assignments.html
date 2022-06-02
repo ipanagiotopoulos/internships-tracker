@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load bootstrap %}
+{% block title %} {% trans "Students' Assignments" %} {% endblock title %}
+{% block content%}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    {% if message %}
+      {{message}}
+    {% endif %}
+    <div>
+        <div style="margin-bottom: 2rem;"> 
+            <b style="font-size: 2rem; "> Do you want to add an assignment?</b>
+            <span style="font-size: 1.5rem;">
+                <button class="btn btn-lg btn-info mb-4" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Add an assignment
+                </button>
+            {% if request.user.uni_department == "ALL" %}
+                <div class="collapse mt-4 mb-4" id="collapseExample">
+                   <div class="form-check">
+                        <input class="form-check-input" type="radio" name="departmentSelection" id="flexRadioDefault1" value="IT">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                            Informatics and Telematics
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="departmentSelection" id="flexRadioDefault2" value="ND"  checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                             Nutrition and Dietics
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="departmentSelection" id="flexRadioDefault2" value="ESD" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                             Economics and Sustainable Development
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="departmentSelection" id="flexRadioDefault2" value="G" checked>
+                        <label class="form-check-label" for="flexRadioDefault2">
+                             Geography
+                        </label>
+                    </div>
+                    <button style="margin-top: 3rem;" class="btn btn-lg btn-success" id="addAssignment" type="submit">Proceed</button>     
+                </div>
+            {% else %}
+              {% if request.user.uni_department == "IT" %}
+                <div class="collapse mt-4 mb-4" id="collapseExample">
+                    <div class="form-check">
+                            <input class="form-check-input" type="radio" name="departmentSelection" id="flexRadioDefault1" value="IT">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Informatics and Telematics
+                            </label>
+                    </div>
+                    <button style="margin-top: 3rem;" class="btn btn-lg btn-success" id="addAssignment" type="submit">Proceed</button> 
+                </div>
+              {% endif %}
+              {% if request.user.uni_department == "G" %}
+                <div class="collapse mt-4 mb-4" id="collapseExample">
+                    <div class="form-check">
+                            <input class="form-check-input" type="radio" name="departmentSelection" id="flexRadioDefault1" value="G">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Geography
+                            </label>
+                    </div>
+                    <button style="margin-top: 3rem;" class="btn btn-lg btn-success" id="addAssignment" type="submit">Proceed</button> 
+                </div>
+              {% endif %}
+              {% if request.user.uni_department == "ND" %}
+                <div class="collapse mt-4 mb-4" id="collapseExample">
+                    <div class="form-check">
+                            <input class="form-check-input" type="radio" name="departmentSelection" id="flexRadioDefault1" value="G">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Nutrition and Dietics
+                            </label>
+                    </div>
+                    <button style="margin-top: 3rem;" class="btn btn-lg btn-success" id="addAssignment" type="submit">Proceed</button> 
+                </div>
+              {% endif %}
+              {% if request.user.uni_department == "ESD" %}
+                <div class="collapse mt-4 mb-4" id="collapseExample">
+                    <div class="form-check">
+                            <input class="form-check-input" type="radio" name="departmentSelection" id="flexRadioDefault1" value="G">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Economics and Sustainable Development
+                            </label>
+                    </div>
+                    <button style="margin-top: 3rem;" class="btn btn-lg btn-success" id="addAssignment" type="submit">Proceed</button>
+                </div>
+              {% endif %}
+            {% endif %}
+            </span>
+        </div>    
+    </div>    
+    {% if filter.qs %}     
+        <button class="btn btn-info mb-4" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+            Search filters
+        </button>
+        <div class="collapse mt-4 mb-4" id="collapseExample2">
+                <form  class='form-group' method="GET">
+                    {{ filter.form|bootstrap_horizontal}}
+                    <button type="submit" class="btn btn-info">Search</button>
+                </form>
+        </div>                          
+        <table id="datatable" class="table align-items-center table-flush">
+            <thead class="bg-light">
+                <tr>
+                <th scope="col">{% trans "Name" %}</th>
+                <th scope="col">{% trans "Email" %}</th>
+                <th scope="col">{% trans "Department" %}</th>
+                <th scope="col">{% trans "Created at" %}</th>
+                <th scope="col">{% trans "Assignment Status" %}</th>
+                <th scope="col">{% trans "Trainee Position" %}</th>
+                <th scope="col">{% trans "Carrier name" %}</th>
+                <th scope="col">{% trans "Job ID" %}</th>
+                <th scope="col">{% trans "Secretary review" %}</th>
+                <th scope="col">{% trans "Action" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for assignment in filter.qs %}                                                            
+                    <tr>
+                        <td>{{assignment.trainee.fist_name}} {{assignment.trainee.last_name}}</td>
+                        <td>{{assignment.trainee.email}}</td>
+                        <td>{{assignment.trainee.uni_department}}</td>
+                        <td>{{assignment.created}}</td>
+                        {% if assignment.assignment_status == "P" %}
+                           <td>Pending</td>
+                        {% else %}
+                            {% if assignment.assignment_status == "A" %}
+                              <td>Accepted</td>
+                            {% else %}
+                              <td>Rejected</td>
+                            {% endif %}
+                        {% endif %}
+                        <td>{{assignment.trainee_position.title}}</td>
+                        <td>{{assignment.trainee_position.carrier.official_name}}</td>
+                        <td>{{assignment.trainee_position.job_code}}:{{assignment.trainee_position.no_id}}</td>
+                        {% if assignment.finalized%}
+                           <td> 
+                              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                              </svg>
+                            </td>
+                        {% else %}
+                            <td>
+                               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                            </td>
+                        {% endif %}
+                        <td>
+                            <a class="btn btn-outline-info" href="/secretary/assignment/{{assignment.id}}">{% trans "View" %}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="row">
+            <div class="col col-12">
+                <div class="alert alert-danger" id="message" ><h4>{% translate "No assignments found!" %}</h4></div>
+                <button class="btn btn-lg  btn-info"> <a  class="text-white" href="/secretary/assignments">Go back </button>
+            </div>
+        </div>
+    {% endif %}
+    <script type="text/javascript"
+        src="https://code.jquery.com/jquery-3.5.1.js">
+    </script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js">
+    </script>       
+    <script type="text/javascript"
+      src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js">
+    </script>
+    <script type="text/javascript"
+        src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js">
+    </script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        var table = $('#datatable').DataTable({
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
+                "ordering" : false,
+                "responsive":true
+            })
+       })
+    </script>
+    <script>
+        window.setTimeout(function() {
+            $("#message").fadeTo(400, 0).slideUp(400, function(){
+                    $(this).remove();
+                });
+        }, 3000);
+    </script>
+    <script>
+        $('#addAssignment').on('click', function() {
+            department = $('input[name=departmentSelection]:checked', '#collapseExample').val()
+            location.assign('/secretary/assignment?department='+department) 
+        });
+    </script>
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "My carrier" %}{% endblock title %}
+{% block content %}
+  <div class="card">
+      <div class="card-header bg-white">
+          <h2>{% trans "My Carrier" %}</h2>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Name: </b> 
+          <span style="font-size: 1.1rem;" > {{carrier.official_name}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Address: </b> 
+          <span style="font-size: 1.1rem;" > {{carrier.full_address}} </span>
+        </div>
+        <div style="margin-bottom: 1rem;"> 
+          <b style="font-size: 1.3rem; "> Description: </b> 
+          <span style="font-size: 1.1rem;" > {{carrier.description}} </span>
+        </div>
+        {% if carrier.department_1 != "NON" %}
+          <div style="margin-bottom: 1rem;"> 
+            <b style="font-size: 1.3rem; "> Department 1: </b> 
+            <span style="font-size: 1.1rem;" > {{carrier.department_1}} </span>
+          </div>
+        {% endif %}
+        {% if carrier.department_2 != "NON" %}
+          <div style="margin-bottom: 1rem;"> 
+              <b style="font-size: 1.3rem; "> Department 2: </b> 
+              <span style="font-size: 1.1rem;" > {{carrier.department_2}} </span>
+          </div>
+        {% endif%}
+        {% if carrier.department_3 != "NON" %}
+          <div style="margin-bottom: 1rem;"> 
+              <b style="font-size: 1.3rem; "> Department 3: </b> 
+              <span style="font-size: 1.1rem;" > {{carrier.department_3}} </span>
+          </div>
+        {% endif%}
+        {% if carrier.department_4 != "NON" %}
+          <div style="margin-bottom: 1rem;"> 
+              <b style="font-size: 1.3rem; "> Department 4: </b> 
+              <span style="font-size: 1.1rem;" > {{carrier.department_4}} </span>
+          </div>
+        {% endif%}
+      </div>
+      <div class="card-footer ">
+          <a href="{% url 'carrier:carrier_update' %}" class="btn btn-success ">{% trans "Update" %}</a>
+      </div>
+  </div>
+{% endblock %}
